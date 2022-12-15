@@ -1,0 +1,33 @@
+{
+    "name": "nodejs_tut",
+    "version": "1.0.0",
+    "description": "node Js tutorial",
+    "main": "app.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "start": "nodemon app.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Jyoti379/nodeJs_tut.git"
+    },
+    "author": "jyoti",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Jyoti379/nodeJs_tut/issues"
+    },
+    "homepage": "https://github.com/Jyoti379/nodeJs_tut#readme",
+    "devDependencies": {
+        "nodemon": "^2.0.20"
+    },
+    "dependencies": {
+        "babel": "^6.23.0",
+        "body-parser": "^1.20.0",
+        "cors": "^2.8.5",
+        "dotenv": "^16.0.3",
+        "ejs": "^3.1.8",
+        "express": "^4.18.2",
+        "mysql2": "^2.3.3",
+        "sequelize": "^6.25.1"
+    }
+}
