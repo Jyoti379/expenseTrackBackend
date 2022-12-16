@@ -1,3 +1,5 @@
+
+const bcrypt = require('bcrypt');
 const User= require('../models/users');
 
 function isStringinvalid(string){
@@ -16,10 +18,14 @@ exports.signup = async(req,res)=>{
     if(isStringinvalid(name)||isStringinvalid(email)||isStringinvalid(password)){
         return res.status(400).json({err:'invalid input:Something is missing'})
     }
+    const saltRounds = 10;
+    bcrypt.hash(password, saltRounds, async (err, hash)=>{
+        console.log(err);
+        await User.create({name,email,phonenumber,password:hash})
+        res.status(200).json({message:'Successfully created your  account'})
+    })
 
-     await User.create({name,email,phonenumber,password})
-     res.status(200).json({message:'Successfully created your  account'})
-    }catch(err){
+     }catch(err){
         res.status(500).json({error:err});
     }
 }
@@ -34,13 +40,21 @@ exports.signup = async(req,res)=>{
         }
       const user=await User.findAll({where:{email}})
       if(user.length>0){
-        if(user[0].password == password){
-            return res.status(200).json({success:true,message:'user login successful'})
-        }
-        else{
-            return res.status(401).json({success:false,message:'password incorect:User not authorised'})
-        }
-      }else{
+        bcrypt.compare(password, user[0].password, function(err, response){
+            if (err){
+                console.log(err)
+              throw new Error('something went wrong');
+                }
+                if(response==true){
+                    return res.status(200).json({success:true,message:'user login successful'})    
+                }
+                else{
+                    return res.status(401).json({success:false,message:'password incorect:User not authorised'})
+                }
+
+        })
+
+       }else{
         return res.status(404).json({sucess:false,message:'User not found'})
       }
 
