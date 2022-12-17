@@ -12,10 +12,12 @@ const app = express();
 app.use(cors());
 
 const userRoutes=require('./routes/user')
+const expenseRoutes=require('./routes/expense')
 
 app.use(bodyParser.json());
 
 app.use('/user',userRoutes);
+app.use('/expense',expenseRoutes);
 
 User.hasMany(Expense);
 Expense.belongsTo(User)
