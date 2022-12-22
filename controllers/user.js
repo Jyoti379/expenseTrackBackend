@@ -31,8 +31,12 @@ exports.signup = async(req,res)=>{
     }
 }
 
-function generateAccessToken(id,name){
-    return jwt.sign({userId:id,name:name},'secretkey')//the code inside quotes can be given anything of choice
+exports.generateAccessToken = (id,name,isPremium)=>{
+    return jwt.sign({userId:id,name:name,isPremium:isPremium},'secretkey')//the code inside quotes can be given anything of choice
+}
+function generateAccessToken(id,name,isPremium){
+    return jwt.sign({userId:id,name:name,isPremium:isPremium},'secretkey')
+
 }
 
  exports.login= async (req,res)=>{
@@ -52,7 +56,7 @@ function generateAccessToken(id,name){
               throw new Error('something went wrong');
                 }
                 if(response==true){
-                    return res.status(200).json({success:true,message:'user login successful',token:generateAccessToken(user[0].id)})    
+                    return res.status(200).json({success:true,message:'user login successful',token:generateAccessToken(user[0].id,user[0].name,user[0].isPremium)})    
                 }
                 else{
                     return res.status(401).json({success:false,message:'password incorect:User not authorised'})
