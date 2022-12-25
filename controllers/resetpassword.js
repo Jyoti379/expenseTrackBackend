@@ -53,9 +53,9 @@ const forgetpassword = async (req,res)=>{
 
   const resetpassword = (req, res) => {
     const id =  req.params.id;
-    Forgetpassword.findOne({ where : { id }}).then(forgotpasswordrequest => {
-        if(forgotpasswordrequest){
-            forgotpasswordrequest.update({ active: false});
+    Forgetpassword.findOne({ where : { id }}).then(forgetpasswordrequest => {
+        if(forgetpasswordrequest){
+            forgetpasswordrequest.update({ active: false});
             res.status(200).send(`<html>
                                     <script>
                                         function formsubmitted(e){
@@ -80,7 +80,7 @@ const updatepassword = (req, res) => {
   try {
       const { newpassword } = req.query;
       const { resetpasswordid } = req.params;
-      Forgotpassword.findOne({ where : { id: resetpasswordid }}).then(resetpasswordrequest => {
+      Forgetpassword.findOne({ where : { id: resetpasswordid }}).then(resetpasswordrequest => {
           User.findOne({where: { id : resetpasswordrequest.userId}}).then(user => {
               // console.log('userDetails', user)
               if(user) {
