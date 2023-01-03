@@ -1,5 +1,30 @@
 const Expense=require('../models/expenses');
 const jwt = require('jsonwebtoken');
+const AWS=require('aws-sdk');
+const UserServices =require('../services/userservices');
+const S3Services=require('../services/S3services')
+
+
+
+exports.downloadexpense= async (req,res)=>{
+  try {
+	const expenses= await UserServices.getExpenses(req);
+	  console.log(expenses)
+	  const stringifiedExpenses = JSON.stringify(expenses)
+	  console.log(stringifiedExpenses)
+	  //it should depend on useId
+	  const userId=req.user.id;
+	  
+	  const filename =`Expense${userId}/${new Date}.txt`;
+	  const fileURL= await S3Services.uploadToS3(stringifiedExpenses,filename);
+	 
+	  res.status(200).json({fileURL,success:true})
+} catch (error) {
+  console.log(error)
+  res.status(500).json({fileURL:'',success:false,error:error})
+	
+}
+}
 
 function isStringinvalid(string){
   if(string ==undefined || string.length== 0){
