@@ -2,7 +2,9 @@ const Expense=require('../models/expenses');
 const jwt = require('jsonwebtoken');
 const AWS=require('aws-sdk');
 const UserServices =require('../services/userservices');
-const S3Services=require('../services/S3services')
+const S3Services = require('../services/S3services');
+//const Localstorage= require('node-localstorage')
+
 
 
 
@@ -54,9 +56,11 @@ exports.addExpenses= async(req,res,next)=>{
 
 exports.getExpenses = async(req,res,next)=>{
     try{
+   
       const page = +req.query.page||1
       let totalexpenses;
-      let Items_Per_Page =5;
+      let Items_Per_Page =10;
+     
 
       Expense.count().then((total)=>{
         totalexpenses=total;
