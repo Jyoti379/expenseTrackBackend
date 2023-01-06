@@ -1,8 +1,11 @@
 const path = require('path');
-
+const fs= require('fs');
 const express = require('express');
 const bodyParser = require('body-parser');
 var cors= require('cors');
+const helmet=require('helmet');
+
+const morgan= require('morgan');
 
 
 const sequelize = require('./utill/database');
@@ -12,6 +15,7 @@ const Order= require('./models/orders');
 const ForgetPassword=require('./models/forgetpassword');
 
 const app = express();
+
 const dotenv = require('dotenv');
 
 dotenv.config();
@@ -25,7 +29,14 @@ const purchaseRoutes=require('./routes/purchase')
 const premiumPurchaseRoutes=require('./routes/premiumPurchase');
 const resetpasswordRoutes=require('./routes/resetpassword');
 
+const accessLogStream= fs.createWriteStream(path.join(__dirname,'access.log'),{flags:'a'}) //a:here is for appended,to stop overrriding instead adds to file
+app.use(helmet());
+app.use(morgan('combined',{stream:accessLogStream}))
+
+
 app.use(bodyParser.json());
+
+
 
 app.use('/user',userRoutes);
 app.use('/expense',expenseRoutes);
@@ -46,7 +57,7 @@ ForgetPassword.belongsTo(User)
 
 sequelize.sync()
 .then(()=>{
-    app.listen(3000);
+    app.listen(process.env.PORT||3000);
 })
 .catch(err=>{
     console.log(err)
