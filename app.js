@@ -6,6 +6,13 @@ var cors= require('cors');
 const helmet=require('helmet');
 
 const morgan= require('morgan');
+const https= require('https');
+
+const app = express();
+
+const dotenv = require('dotenv');
+
+dotenv.config();
 
 
 const sequelize = require('./utill/database');
@@ -14,13 +21,13 @@ const Expense=require('./models/expenses')
 const Order= require('./models/orders');
 const ForgetPassword=require('./models/forgetpassword');
 
-const app = express();
 
-const dotenv = require('dotenv');
 
-dotenv.config();
 
 app.use(cors());
+
+const privateKey=fs.readFileSync('server.key');
+const certificate=fs.readFileSync('server.cert')
 
 
 const userRoutes=require('./routes/user')
@@ -57,7 +64,10 @@ ForgetPassword.belongsTo(User)
 
 sequelize.sync()
 .then(()=>{
-    app.listen(process.env.PORT||3000);
+//https
+//.createServer({key:privateKey,cert:certificate},app)
+//.listen(process.env.PORT||3000);
+app.listen(process.env.PORT||3000)
 })
 .catch(err=>{
     console.log(err)
