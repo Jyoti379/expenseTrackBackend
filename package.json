@@ -1,5 +1,5 @@
 {
-    "name": "nodejs_tut",
+  "name": "nodejs_tut",
     "version": "1.0.0",
     "description": "node Js tutorial",
     "main": "app.js",
